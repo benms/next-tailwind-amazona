@@ -9,6 +9,7 @@ import { CART_ADD_ITEM, Store } from '../../utils/Store';
 export default function ProductScreen() {
   const {state, dispatch} = useContext(Store);
   const {query} = useRouter();
+  const router = useRouter();
   const {slug} = query;
   const product = data.products.find(p => p.slug === slug);
   const addToCartHandler = () => {
@@ -22,6 +23,7 @@ export default function ProductScreen() {
       type: CART_ADD_ITEM,
       payload: {...product, quantity}
     });
+    router.push('/cart');
   };
   if (!product) {
     return (
