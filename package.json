@@ -13,6 +13,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@types/react": "^18.0.15",
     "autoprefixer": "^10.4.7",
     "eslint-config-next": "12.1.5",
     "postcss": "^8.4.5",
