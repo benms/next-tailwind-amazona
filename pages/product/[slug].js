@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useContext } from 'react'
 import Layout from '../../components/Layout'
 import data from '../../utils/data';
-import { Store } from '../../utils/Store';
+import { CART_ADD_ITEM, Store } from '../../utils/Store';
 
 export default function ProductScreen() {
   const {state, dispatch} = useContext(Store);
@@ -19,7 +19,7 @@ export default function ProductScreen() {
       return;
     }
     dispatch({
-      type: 'CART_ADD_ITEM',
+      type: CART_ADD_ITEM,
       payload: {...product, quantity}
     });
   };

@@ -1,6 +1,7 @@
 import { createContext, useReducer } from "react";
 
 export const Store = createContext();
+export const CART_ADD_ITEM = 'CART_ADD_ITEM';
 
 const initialState = {
   cart: {
@@ -10,7 +11,7 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'CART_ADD_ITEM': {
+    case CART_ADD_ITEM: {
       const newItem = action.payload;
       const existItem = state.cart.cartItems.find(
         (item) => item.slug === newItem.slug
@@ -27,6 +28,5 @@ function reducer(state, action) {
 
 export function StoreProvider({children}) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const value = {state, dispatch};
-  return <Store.Provider value={value}>{children}</Store.Provider>;
+  return <Store.Provider value={{state, dispatch}}>{children}</Store.Provider>;
 }
