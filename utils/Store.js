@@ -1,16 +1,20 @@
 import { createContext, useReducer } from "react";
+import Cookies from 'js-cookie';
 
 export const Store = createContext();
 export const CART_ADD_ITEM = 'CART_ADD_ITEM';
 export const CART_REMOVE_ITEM = 'CART_REMOVE_ITEM';
 
+const COOKIE_KEY_CART = 'cart';
+
 const initialState = {
-  cart: {
-    cartItems: []
-  }
+  cart: Cookies.get(COOKIE_KEY_CART)
+    ? JSON.parse(Cookies.get(COOKIE_KEY_CART))
+    : { cartItems: [] }
 };
 
 function reducer(state, action) {
+  let stateVal = state;
   switch (action.type) {
     case CART_ADD_ITEM: {
       const newItem = action.payload;
@@ -20,17 +24,20 @@ function reducer(state, action) {
       const cartItems = existItem
         ? state.cart.cartItems.map((item) => item.name === existItem.name ? newItem : item)
         : [...state.cart.cartItems, newItem];
-      return {...state, cart: {...state.cart, cartItems}}
+      Cookies.set(COOKIE_KEY_CART, JSON.stringify({...state.cart, cartItems}));
+      stateVal = {...state, cart: {...state.cart, cartItems}};
     }
+    break;
     case CART_REMOVE_ITEM: {
       const cartItems = state.cart.cartItems.filter(
         (item) => item.slug !== action.payload.slug
       );
-      return {...state, cart: {...state.cart, cartItems}}
+      Cookies.set(COOKIE_KEY_CART, JSON.stringify({...state.cart, cartItems}));
+      stateVal = {...state, cart: {...state.cart, cartItems}};
     }
-    default:
-      return state;
+    break;
   }
+  return stateVal;
 }
 
 export function StoreProvider({children}) {
