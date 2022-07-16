@@ -5,13 +5,14 @@ export const Store = createContext();
 export const CART_ADD_ITEM = 'CART_ADD_ITEM';
 export const CART_REMOVE_ITEM = 'CART_REMOVE_ITEM';
 export const CART_RESET = 'CART_RESET';
+export const SAVE_SHIPPING_ADDRESS = 'SAVE_SHIPPING_ADDRESS';
 
 export const COOKIE_KEY_CART = 'cart';
 
 const initialState = {
   cart: Cookies.get(COOKIE_KEY_CART)
     ? JSON.parse(Cookies.get(COOKIE_KEY_CART))
-    : { cartItems: [] }
+    : { cartItems: [] , shippingAddress: {} }
 };
 
 function reducer(state, action) {
@@ -38,7 +39,7 @@ function reducer(state, action) {
     }
     break;
     case CART_RESET: {
-      return {
+      stateVal = {
         ...state,
         cart: {
           cartItems: [],
@@ -47,6 +48,20 @@ function reducer(state, action) {
         }
       };
     }
+    break;
+    case SAVE_SHIPPING_ADDRESS: {
+      stateVal = {
+        ...state,
+        cart: {
+          ...state.cart,
+          shippingAddress: {
+            ...state.cart.shippingAddress,
+            ...action.payload
+          },
+        }
+      };
+    }
+    break;
   }
   return stateVal;
 }
