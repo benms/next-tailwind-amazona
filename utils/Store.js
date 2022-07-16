@@ -4,8 +4,9 @@ import Cookies from 'js-cookie';
 export const Store = createContext();
 export const CART_ADD_ITEM = 'CART_ADD_ITEM';
 export const CART_REMOVE_ITEM = 'CART_REMOVE_ITEM';
+export const CART_RESET = 'CART_RESET';
 
-const COOKIE_KEY_CART = 'cart';
+export const COOKIE_KEY_CART = 'cart';
 
 const initialState = {
   cart: Cookies.get(COOKIE_KEY_CART)
@@ -36,6 +37,16 @@ function reducer(state, action) {
       stateVal = {...state, cart: {...state.cart, cartItems}};
     }
     break;
+    case CART_RESET: {
+      return {
+        ...state,
+        cart: {
+          cartItems: [],
+          shippingAddress: {location: {}},
+          paymentMethod: '',
+        }
+      };
+    }
   }
   return stateVal;
 }
