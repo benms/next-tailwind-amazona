@@ -7,7 +7,7 @@ import Layout from '../components/Layout'
 import { SAVE_SHIPPING_ADDRESS, COOKIE_KEY_CART, Store } from '../utils/Store';
 
 export default function ShippingScreen() {
-  const {handleSubmit, register, formState: { errors }, setValue, getValues} = useForm();
+  const {handleSubmit, register, formState: { errors }, setValue} = useForm();
   const {state, dispatch} = useContext(Store);
   const router = useRouter();
   const { cart } = state;

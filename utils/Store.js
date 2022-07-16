@@ -6,6 +6,7 @@ export const CART_ADD_ITEM = 'CART_ADD_ITEM';
 export const CART_REMOVE_ITEM = 'CART_REMOVE_ITEM';
 export const CART_RESET = 'CART_RESET';
 export const SAVE_SHIPPING_ADDRESS = 'SAVE_SHIPPING_ADDRESS';
+export const SAVE_PAYMENT_METHOD = 'SAVE_PAYMENT_METHOD';
 
 export const COOKIE_KEY_CART = 'cart';
 
@@ -58,6 +59,16 @@ function reducer(state, action) {
             ...state.cart.shippingAddress,
             ...action.payload
           },
+        }
+      };
+    }
+    break;
+    case SAVE_PAYMENT_METHOD: {
+      stateVal = {
+        ...state,
+        cart: {
+          ...state.cart,
+          paymentMethod: action.payload,
         }
       };
     }
