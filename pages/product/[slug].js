@@ -1,23 +1,28 @@
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react'
+import { toast } from 'react-toastify';
 import Layout from '../../components/Layout'
-import data from '../../utils/data';
+import Product from '../../models/Product';
+import db from '../../utils/db';
 import { CART_ADD_ITEM, Store } from '../../utils/Store';
 
-export default function ProductScreen() {
+export default function ProductScreen({ product }) {
   const {state, dispatch} = useContext(Store);
-  const {query} = useRouter();
   const router = useRouter();
-  const {slug} = query;
-  const product = data.products.find(p => p.slug === slug);
-  const addToCartHandler = () => {
-    const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
+  if (!product) {
+    return (
+      <Layout title="Product not found">Product not found</Layout>
+    )
+  }
+  const addToCartHandler = async () => {
+    const existItem = state.cart.cartItems.find((c) => c.slug === product.slug);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    if (product.countInStock < quantity) {
-      alert('Sorry, product is out of stock');
-      return;
+    const { data: product_data } = await axios.get(`/api/products/${product._id}`);
+    if (product_data.countInStock < quantity) {
+      return toast.error('Sorry, product is out of stock');
     }
     dispatch({
       type: CART_ADD_ITEM,
@@ -25,11 +30,7 @@ export default function ProductScreen() {
     });
     router.push('/cart');
   };
-  if (!product) {
-    return (
-      <div>Product not found</div>
-    )
-  }
+
   return (
     <Layout title={product.name}>
       <div className='py-2'>
@@ -72,4 +73,18 @@ export default function ProductScreen() {
       </div>
     </Layout>
   )
+}
+
+export async function getServerSideProps({ params }) {
+  const { slug } = params;
+
+  db.connect();
+  const product = await Product.findOne({ slug }).lean();
+  db.disconnect();
+
+  return {
+    props: {
+      product: db.convertDocsToObj(product)
+    }
+  }
 }

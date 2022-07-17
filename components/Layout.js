@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { CART_RESET, COOKIE_KEY_CART, Store } from '../utils/Store';
 import { Menu } from '@headlessui/react'
 import DropdownLink from './DropdownLink';
@@ -24,7 +25,7 @@ export default function Layout({title, children}) {
   return (
     <>
        <Head>
-        <title>{title ? `${title}-Amazona`: 'Amazona'}</title>
+        <title>{title ? `${title} [Amazona]`: 'Amazona'}</title>
         <meta name="description" content="Ecommerce web site" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
