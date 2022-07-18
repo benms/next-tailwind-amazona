@@ -80,7 +80,7 @@ function reducer(state, action) {
         cartItems: [],
       };
       stateVal = { ...state, cart };
-      Cookies.set(COOKIE_KEY_CART, JSON.stringify({ cart }));
+      Cookies.set(COOKIE_KEY_CART, JSON.stringify(cart));
     }
     break;
   }

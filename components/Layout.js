@@ -15,7 +15,7 @@ export default function Layout({title, children}) {
   const { status, data: session } = useSession();
   useEffect(() => {
     setCartItemsCount(cart.cartItems.reduce((a, c) => a+c.quantity, 0));
-  }, [cart.cartItems]);
+  }, [cart]);
   const logoutClickHandler = () => {
     dispatch({type: CART_RESET});
     signOut({ callbackUrl: '/login' });
