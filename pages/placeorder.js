@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Cookies } from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
@@ -8,7 +7,7 @@ import { toast } from 'react-toastify';
 import CheckoutWizard from '../components/CheckoutWizard'
 import Layout from '../components/Layout'
 import { getError } from '../utils/error'
-import { CART_CLEAR_ITEMS, COOKIE_KEY_CART, Store } from '../utils/Store';
+import { CART_CLEAR_ITEMS, Store } from '../utils/Store';
 
 export default function PlaceOrderScreen() {
   const { state, dispatch } = useContext(Store);
@@ -17,7 +16,7 @@ export default function PlaceOrderScreen() {
   const router = useRouter();
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
 
-  const itemsPrice = round2(cartItems.reduce((a, c) => a+c.quantity, 0));
+  const itemsPrice = round2(cartItems.reduce((a, c) => a+c.quantity*c.price, 0));
   const shippingPrice = itemsPrice > 200 ? 0 : 15;
   const taxPrice = round2(itemsPrice*0.15);
   const totalPrice = round2(itemsPrice+shippingPrice+taxPrice);
@@ -33,7 +32,7 @@ export default function PlaceOrderScreen() {
   const placeOrderHandler = async () => {
     try {
       setLoading(true);
-      const { data } = axios.post('/api/orders', {
+      const { data: newOrder } = await axios.post('/api/orders', {
         orderItems: cartItems,
         shippingAddress,
         paymentMethod,
@@ -43,13 +42,10 @@ export default function PlaceOrderScreen() {
         totalPrice
       });
       setLoading(false);
-      dispatch({ type: CART_CLEAR_ITEMS});
-      Cookies.set(COOKIE_KEY_CART, JSON.stringify({
-        ...cart,
-        cartItems: []
-      }));
-      router.push(`/order/${data._id}`);
+      dispatch({ type: CART_CLEAR_ITEMS });
+      router.push(`/order/${newOrder._id}`);
     } catch (err) {
+      console.error({err});
       setLoading(false);
       toast.error(getError(err));
     }
@@ -128,7 +124,7 @@ export default function PlaceOrderScreen() {
               <ul>
                 <li>
                   <div className="mb-2 flex justify-between">
-                    <div>Items</div>
+                    <div>Items price</div>
                     <div>${itemsPrice}</div>
                   </div>
                 </li>

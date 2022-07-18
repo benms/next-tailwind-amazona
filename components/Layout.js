@@ -4,10 +4,9 @@ import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CART_RESET, COOKIE_KEY_CART, Store } from '../utils/Store';
+import { CART_RESET, Store } from '../utils/Store';
 import { Menu } from '@headlessui/react'
 import DropdownLink from './DropdownLink';
-import Cookies from 'js-cookie';
 
 export default function Layout({title, children}) {
   const {state, dispatch} = useContext(Store);
@@ -18,7 +17,6 @@ export default function Layout({title, children}) {
     setCartItemsCount(cart.cartItems.reduce((a, c) => a+c.quantity, 0));
   }, [cart.cartItems]);
   const logoutClickHandler = () => {
-    Cookies.remove(COOKIE_KEY_CART);
     dispatch({type: CART_RESET});
     signOut({ callbackUrl: '/login' });
   };

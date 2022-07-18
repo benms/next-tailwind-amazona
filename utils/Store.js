@@ -19,6 +19,7 @@ const initialState = {
 
 function reducer(state, action) {
   let stateVal = state;
+  let cart = { ...state.cart }
   switch (action.type) {
     case CART_ADD_ITEM: {
       const newItem = action.payload;
@@ -28,63 +29,62 @@ function reducer(state, action) {
       const cartItems = existItem
         ? state.cart.cartItems.map((item) => item.name === existItem.name ? newItem : item)
         : [...state.cart.cartItems, newItem];
-      Cookies.set(COOKIE_KEY_CART, JSON.stringify({...state.cart, cartItems}));
-      stateVal = {...state, cart: {...state.cart, cartItems}};
+      cart = {...state.cart, cartItems};
+      Cookies.set(COOKIE_KEY_CART, JSON.stringify(cart));
+      stateVal = { ...state, cart };
     }
     break;
     case CART_REMOVE_ITEM: {
       const cartItems = state.cart.cartItems.filter(
         (item) => item.slug !== action.payload.slug
       );
-      Cookies.set(COOKIE_KEY_CART, JSON.stringify({...state.cart, cartItems}));
-      stateVal = {...state, cart: {...state.cart, cartItems}};
+      cart = {...state.cart, cartItems};
+      Cookies.set(COOKIE_KEY_CART, JSON.stringify(cart));
+      stateVal = { ...state, cart };
     }
     break;
     case CART_RESET: {
-      stateVal = {
-        ...state,
-        cart: {
-          cartItems: [],
-          shippingAddress: {location: {}},
-          paymentMethod: '',
-        }
+      cart = {
+        cartItems: [],
+        shippingAddress: {location: {}},
+        paymentMethod: '',
       };
+      stateVal = { ...state, cart };
+      Cookies.remove(COOKIE_KEY_CART);
     }
     break;
     case SAVE_SHIPPING_ADDRESS: {
-      stateVal = {
-        ...state,
-        cart: {
-          ...state.cart,
-          shippingAddress: {
-            ...state.cart.shippingAddress,
-            ...action.payload
-          },
+      cart = {
+        ...state.cart,
+        shippingAddress: {
+          ...state.cart.shippingAddress,
+          ...action.payload,
         }
       };
+      stateVal = { ...state, cart };
+      Cookies.set(COOKIE_KEY_CART, JSON.stringify(cart));
     }
     break;
     case SAVE_PAYMENT_METHOD: {
-      stateVal = {
-        ...state,
-        cart: {
-          ...state.cart,
-          paymentMethod: action.payload,
-        }
+      cart = {
+        ...state.cart,
+        paymentMethod: action.payload,
       };
+      stateVal = { ...state, cart };
+      Cookies.set(COOKIE_KEY_CART, JSON.stringify(cart));
     }
     break;
     case CART_CLEAR_ITEMS: {
-      stateVal = {
-        ...state,
-        cart: {
-          ...state.cart,
-          cartItems: [],
-        }
+      cart = {
+        ...state.cart,
+        cartItems: [],
       };
+      stateVal = { ...state, cart };
+      Cookies.set(COOKIE_KEY_CART, JSON.stringify({ cart }));
     }
     break;
   }
+
   return stateVal;
 }
 

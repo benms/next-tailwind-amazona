@@ -1,10 +1,9 @@
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import CheckoutWizard from '../components/CheckoutWizard'
 import Layout from '../components/Layout'
-import { SAVE_SHIPPING_ADDRESS, COOKIE_KEY_CART, Store } from '../utils/Store';
+import { SAVE_SHIPPING_ADDRESS, Store } from '../utils/Store';
 
 export default function ShippingScreen() {
   const {handleSubmit, register, formState: { errors }, setValue} = useForm();
@@ -22,20 +21,8 @@ export default function ShippingScreen() {
   const submitHandler = ({fullName, address, city, postalCode, country}) => {
     dispatch({
       type: SAVE_SHIPPING_ADDRESS,
-      payload: {fullName, address, city, postalCode, country, location}
+      payload: {fullName, address, city, postalCode, country}
     });
-    Cookies.set(
-      COOKIE_KEY_CART,
-      JSON.stringify({ ...cart,
-        shippingAddress: {
-          fullName,
-          address,
-          city,
-          postalCode,
-          country,
-        }
-      })
-    );
     router.push('/payment');
   };
 
