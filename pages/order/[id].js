@@ -44,7 +44,7 @@ export default function OrderScreen() {
     order,
     successPay,
     loadingPay,
-    errorPay
+    // errorPay
   }, dispatch] = useReducer(reducer, {
     loading: true,
     order: {},
