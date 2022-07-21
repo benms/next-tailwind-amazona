@@ -58,7 +58,6 @@ export default function LoginScreen() {
             type="password"
             className='w-full'
             id='password'
-            autoFocus
             {...register('password',
             {
                       required: 'Please enter password',

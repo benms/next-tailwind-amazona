@@ -66,8 +66,7 @@ export default function RegisterScreen() {
                     })
             }
             className='w-full'
-            id='email'
-            autoFocus />
+            id='email'/>
             {errors.email && (<div className='text-red-500'>{errors.email.message}</div>)}
         </div>
         <div className="mb-4">
@@ -76,7 +75,6 @@ export default function RegisterScreen() {
             type="password"
             className='w-full'
             id='password'
-            autoFocus
             {...register('password',
             {
                       required: 'Please enter password',
@@ -91,7 +89,6 @@ export default function RegisterScreen() {
             type="password"
             className='w-full'
             id='confirmPassword'
-            autoFocus
             {...register('confirmPassword',
             {
                       required: 'Please enter confirm password',
