@@ -4,17 +4,17 @@ import React, { useEffect, useReducer } from 'react'
 import Layout from '../components/Layout'
 import { getError } from '../utils/error';
 
-const FETCH_FAIL = 'FETCH_FAIL';
-const FETCH_REQUEST = 'FETCH_REQUEST';
-const FETCH_SUCCESS = 'FETCH_SUCCESS';
+const FETCH_ORDERS_FAIL = 'FETCH_ORDERS_FAIL';
+const FETCH_ORDERS_REQUEST = 'FETCH_ORDERS_REQUEST';
+const FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_SUCCESS';
 
 function reducer(state, action) {
   switch (action.type) {
-    case FETCH_REQUEST:
+    case FETCH_ORDERS_REQUEST:
       return {...state, loading: true, error: ''};
-    case FETCH_SUCCESS:
+    case FETCH_ORDERS_SUCCESS:
       return {...state, loading: false, orders: action.payload, error: ''};
-    case FETCH_FAIL:
+    case FETCH_ORDERS_FAIL:
       return {...state, loading: false, error: action.payload};
     default:
       return state;
@@ -27,11 +27,11 @@ export default function OrderHistoryScreen() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        dispatch({ type: FETCH_REQUEST });
+        dispatch({ type: FETCH_ORDERS_REQUEST });
         const { data } = await axios.get(`/api/orders/history`);
-        dispatch({ type: FETCH_SUCCESS, payload: data })
+        dispatch({ type: FETCH_ORDERS_SUCCESS, payload: data })
       } catch (err) {
-        dispatch({ type: FETCH_FAIL, payload: getError(err) });
+        dispatch({ type: FETCH_ORDERS_FAIL, payload: getError(err) });
       }
     };
     fetchOrders();
