@@ -8,27 +8,27 @@ import { toast } from "react-toastify";
 import Layout from "../../components/Layout";
 import { getError } from "../../utils/error";
 
-const FETCH_REQUEST = "FETCH_REQUEST";
-const FETCH_SUCCESS = "FETCH_SUCCESS";
-const FETCH_FAIL = "FETCH_FAIL";
-const PAY_RESET = "PAY_RESET";
-const PAY_FAIL = "PAY_FAIL";
-const PAY_SUCCESS = "PAY_SUCCESS";
-const PAY_REQUEST = "PAY_REQUEST";
+const ORDER_FETCH_REQUEST = "ORDER_FETCH_REQUEST";
+const ORDER_FETCH_SUCCESS = "ORDER_FETCH_SUCCESS";
+const ORDER_FETCH_FAIL = "ORDER_FETCH_FAIL";
+const ORDER_PAY_RESET = "ORDER_PAY_RESET";
+const ORDER_PAY_FAIL = "ORDER_PAY_FAIL";
+const ORDER_PAY_SUCCESS = "ORDER_PAY_SUCCESS";
+const ORDER_PAY_REQUEST = "ORDER_PAY_REQUEST";
 
 function reducer(state, action) {
   switch (action.type) {
-    case FETCH_REQUEST:
+    case ORDER_FETCH_REQUEST:
       return { ...state, loading: true, error: "" };
-    case FETCH_SUCCESS:
+    case ORDER_FETCH_SUCCESS:
       return { ...state, loading: false, order: action.payload, error: "" };
-    case FETCH_FAIL:
+    case ORDER_FETCH_FAIL:
       return { ...state, loading: false, error: action.payload };
-    case PAY_SUCCESS:
+    case ORDER_PAY_SUCCESS:
       return { ...state, loadingPay: true, successPay: true };
-    case PAY_FAIL:
+    case ORDER_PAY_FAIL:
       return { ...state, loadingPay: false, errorPay: action.payload };
-    case PAY_RESET:
+    case ORDER_PAY_RESET:
       return { ...state, loadingPay: false, successPay: false, errorPay: '' };
     default:
       return state;
@@ -56,17 +56,17 @@ export default function OrderScreen() {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        dispatch({ type: FETCH_REQUEST });
+        dispatch({ type: ORDER_FETCH_REQUEST });
         const { data } = await axios.get(`/api/orders/${orderId}`);
-        dispatch({ type: FETCH_SUCCESS, payload: data });
+        dispatch({ type: ORDER_FETCH_SUCCESS, payload: data });
       } catch (err) {
-        dispatch({ type: FETCH_FAIL, payload: getError(err) });
+        dispatch({ type: ORDER_FETCH_FAIL, payload: getError(err) });
       }
     };
     if (!order._id || successPay || (order._id && order._id !== orderId)) {
       fetchOrder();
       if (successPay) {
-        dispatch({ type: PAY_RESET });
+        dispatch({ type: ORDER_PAY_RESET });
       }
     } else {
       const loadPaypalScript = async () => {
@@ -112,13 +112,13 @@ export default function OrderScreen() {
     return actions.order.capture().then(
       async function (details) {
         try {
-          dispatch({ type: PAY_REQUEST });
+          dispatch({ type: ORDER_PAY_REQUEST });
           const { data } = await axios.put(`/api/orders/${order._id}/pay`, details);
-          dispatch({ type: PAY_SUCCESS, payload: data });
+          dispatch({ type: ORDER_PAY_SUCCESS, payload: data });
           toast.success('Order is paid successfully');
         } catch (err) {
           const errMsg = getError(err);
-          dispatch({ type: PAY_FAIL, payload: errMsg });
+          dispatch({ type: ORDER_PAY_FAIL, payload: errMsg });
           console.error(errMsg);
         }
       }
