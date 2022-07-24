@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useContext } from 'react'
+import React from 'react'
 import Layout from '../components/Layout';
-import { CART_ADD_ITEM, CART_REMOVE_ITEM, Store } from '../utils/Store';
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, useStore } from '../utils/Store';
 import { XCircleIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
@@ -10,7 +10,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 function CartScreen() {
-  const {state, dispatch} = useContext(Store);
+  const {state, dispatch} = useStore();
   const router = useRouter();
   const { cart: { cartItems }} = state;
   const removeItemHandler = (item) => {

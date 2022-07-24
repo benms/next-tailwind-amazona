@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import CheckoutWizard from '../components/CheckoutWizard'
 import Layout from '../components/Layout'
-import { SAVE_PAYMENT_METHOD, Store } from '../utils/Store';
+import { SAVE_PAYMENT_METHOD, useStore } from '../utils/Store';
 
 export default function PaymentScreen() {
   const router = useRouter();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
-  const { state, dispatch } = useContext(Store);
+  const { state, dispatch } = useStore();
   const { cart } = state;
   const { shippingAddress, paymentMethod } = cart;
   const submitHandler = (e) => {

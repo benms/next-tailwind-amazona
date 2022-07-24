@@ -1,15 +1,15 @@
 import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head'
 import Link from 'next/link'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CART_RESET, Store } from '../utils/Store';
+import { CART_RESET, useStore } from '../utils/Store';
 import { Menu } from '@headlessui/react'
 import DropdownLink from './DropdownLink';
 
 export default function Layout({title, children}) {
-  const {state, dispatch} = useContext(Store);
+  const {state, dispatch} = useStore();
   const {cart} = state;
   const [cartItemsCount, setCartItemsCount] = useState(0);
   const { status, data: session } = useSession();

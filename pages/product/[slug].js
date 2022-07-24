@@ -2,15 +2,15 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react'
+import React from 'react'
 import { toast } from 'react-toastify';
 import Layout from '../../components/Layout'
 import Product from '../../models/Product';
 import db from '../../utils/db';
-import { CART_ADD_ITEM, Store } from '../../utils/Store';
+import { CART_ADD_ITEM, useStore } from '../../utils/Store';
 
 export default function ProductScreen({ product }) {
-  const {state, dispatch} = useContext(Store);
+  const {state, dispatch} = useStore();
   const router = useRouter();
   if (!product) {
     return (

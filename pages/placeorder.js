@@ -2,15 +2,15 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import CheckoutWizard from '../components/CheckoutWizard'
 import Layout from '../components/Layout'
 import { getError } from '../utils/error'
-import { CART_CLEAR_ITEMS, Store } from '../utils/Store';
+import { CART_CLEAR_ITEMS, useStore } from '../utils/Store';
 
 export default function PlaceOrderScreen() {
-  const { state, dispatch } = useContext(Store);
+  const { state, dispatch } = useStore();
   const { cart } = state;
   const { cartItems, shippingAddress, paymentMethod } = cart;
   const router = useRouter();

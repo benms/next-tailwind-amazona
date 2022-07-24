@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import CheckoutWizard from '../components/CheckoutWizard'
 import Layout from '../components/Layout'
-import { SAVE_SHIPPING_ADDRESS, Store } from '../utils/Store';
+import { SAVE_SHIPPING_ADDRESS, useStore } from '../utils/Store';
 
 export default function ShippingScreen() {
   const {handleSubmit, register, formState: { errors }, setValue} = useForm();
-  const {state, dispatch} = useContext(Store);
+  const {state, dispatch} = useStore();
   const router = useRouter();
   const { cart } = state;
   const { shippingAddress } = cart;

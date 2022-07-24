@@ -12,6 +12,9 @@
 /.next/
 /out/
 
+/.swc/
+/.vscode/
+
 # production
 /build
 
@@ -33,5 +36,4 @@ yarn-error.log*
 # vercel
 .vercel
 .vscode/settings.json
-.env.sample
 .env

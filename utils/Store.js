@@ -1,7 +1,7 @@
-import { createContext, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 import Cookies from 'js-cookie';
 
-export const Store = createContext();
+const Store = createContext();
 export const CART_ADD_ITEM = 'CART_ADD_ITEM';
 export const CART_REMOVE_ITEM = 'CART_REMOVE_ITEM';
 export const CART_RESET = 'CART_RESET';
@@ -10,6 +10,10 @@ export const SAVE_PAYMENT_METHOD = 'SAVE_PAYMENT_METHOD';
 export const CART_CLEAR_ITEMS = 'CART_CLEAR_ITEMS';
 
 export const COOKIE_KEY_CART = 'cart';
+
+export function useStore() {
+  return useContext(Store);
+}
 
 const initialState = {
   cart: Cookies.get(COOKIE_KEY_CART)
