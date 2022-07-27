@@ -60,6 +60,13 @@ export default function Layout({title, children}) {
                         <Menu.Item>
                           <DropdownLink className="dropdown-link" href="/order-history">Order history</DropdownLink>
                         </Menu.Item>
+                        {
+                            session.user.isAdmin && (
+                              <Menu.Item>
+                                <DropdownLink className="dropdown-link" href="/admin/dashboard">Admin Dashboard</DropdownLink>
+                              </Menu.Item>
+                            )
+                        }
                         <Menu.Item>
                           <DropdownLink
                             className="dropdown-link"
