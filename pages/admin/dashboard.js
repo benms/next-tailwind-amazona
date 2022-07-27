@@ -74,17 +74,17 @@ export default function AdminDashboardScreen() {
             </li>
             <li>
               <Link href="/admin/orders">
-                <a className="font-bold">Orders</a>
+                <a>Orders</a>
               </Link>
             </li>
             <li>
               <Link href="/admin/products">
-                <a className="font-bold">Products</a>
+                <a>Products</a>
               </Link>
             </li>
             <li>
               <Link href="/admin/users">
-                <a className="font-bold">Users</a>
+                <a>Users</a>
               </Link>
             </li>
           </ul>
