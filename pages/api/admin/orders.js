@@ -4,8 +4,8 @@ import db from "../../../utils/db";
 
 const handler = async (req, res) => {
   const session = await getSession({ req });
-  if (!session || (session && !session.user.isAdmin)) {
-    return res.status(401).send('sign in required');
+  if (!session || !session.user.isAdmin) {
+    return res.status(401).send('admin sign in required');
   }
   if (req.method !== 'GET') {
     return res.status(405).send('Method not allowed');
