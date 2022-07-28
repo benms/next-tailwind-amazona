@@ -79,13 +79,15 @@ export default function AdminOrderScreen() {
               <div className="overflow-x-auto">
                 <table className="min-w-full">
                   <thead className="border-b">
-                    <th className="px-5 text-left">Id</th>
-                    <th className="p-5 text-left">User</th>
-                    <th className="p-5 text-left">Date</th>
-                    <th className="p-5 text-left">Total</th>
-                    <th className="p-5 text-left">Paid</th>
-                    <th className="p-5 text-left">Delivered</th>
-                    <th className="p-5 text-left">Action</th>
+                    <tr>
+                      <th className="px-5 text-left">Id</th>
+                      <th className="p-5 text-left">User</th>
+                      <th className="p-5 text-left">Date</th>
+                      <th className="p-5 text-left">Total</th>
+                      <th className="p-5 text-left">Paid</th>
+                      <th className="p-5 text-left">Delivered</th>
+                      <th className="p-5 text-left">Action</th>
+                    </tr>
                   </thead>
                   <tbody>
                     {orders.map((order) => (
@@ -105,7 +107,7 @@ export default function AdminOrderScreen() {
                         </td>
                         <td className="p-5">
                           {order.isDelivered
-                            ? order.deliverAt.substring(0, 10)
+                            ? order.deliveredAt.substring(0, 10)
                             : "not delivered"}
                         </td>
                         <td className="p-5">

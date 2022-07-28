@@ -1,5 +1,6 @@
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -15,6 +16,10 @@ const ORDER_PAY_RESET = "ORDER_PAY_RESET";
 const ORDER_PAY_FAIL = "ORDER_PAY_FAIL";
 const ORDER_PAY_SUCCESS = "ORDER_PAY_SUCCESS";
 const ORDER_PAY_REQUEST = "ORDER_PAY_REQUEST";
+const DELIVER_REQUEST = "DELIVER_REQUEST";
+const DELIVER_SUCCESS = "DELIVER_SUCCESS";
+const DELIVER_FAIL = "DELIVER_FAIL";
+const DELIVER_RESET = "DELIVER_RESET";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -30,12 +35,21 @@ function reducer(state, action) {
       return { ...state, loadingPay: false, errorPay: action.payload };
     case ORDER_PAY_RESET:
       return { ...state, loadingPay: false, successPay: false, errorPay: '' };
+    case DELIVER_REQUEST:
+      return { ...state, loadingDeliver: true };
+    case DELIVER_SUCCESS:
+      return { ...state, loadingDeliver: false, successDeliver: true };
+    case DELIVER_FAIL:
+      return { ...state, loadingDeliver: false, errorDeliver: action.payload };
+    case DELIVER_RESET:
+      return { ...state, loadingDeliver: false, successDeliver: false };
     default:
       return state;
   }
 }
 
 export default function OrderScreen() {
+  const { data: session } = useSession();
   const { query } = useRouter();
   const orderId = query.id;
   const [{
@@ -44,7 +58,8 @@ export default function OrderScreen() {
     order,
     successPay,
     loadingPay,
-    // errorPay
+    loadingDeliver,
+    successDeliver
   }, dispatch] = useReducer(reducer, {
     loading: true,
     order: {},
@@ -63,10 +78,13 @@ export default function OrderScreen() {
         dispatch({ type: ORDER_FETCH_FAIL, payload: getError(err) });
       }
     };
-    if (!order._id || successPay || (order._id && order._id !== orderId)) {
+    if (!order._id || successPay || successDeliver || (order._id && order._id !== orderId)) {
       fetchOrder();
       if (successPay) {
         dispatch({ type: ORDER_PAY_RESET });
+      }
+      if (successDeliver) {
+        dispatch({ type: DELIVER_RESET });
       }
     } else {
       const loadPaypalScript = async () => {
@@ -82,7 +100,8 @@ export default function OrderScreen() {
       };
       loadPaypalScript();
     }
-  }, [order, orderId, paypalDispatch, successPay]);
+  }, [order, orderId, paypalDispatch, successDeliver, successPay]);
+
   const {
     shippingAddress,
     paymentMethod,
@@ -127,6 +146,18 @@ export default function OrderScreen() {
 
   function onError(err) {
     toast.error(getError(err));
+  }
+
+  async function deliverOrderHandler() {
+    try {
+      dispatch({ type: DELIVER_REQUEST });
+      const { data } = await axios.put(`/api/orders/${order._id}/deliver`, {});
+      dispatch({ type: DELIVER_SUCCESS, payload: data });
+      toast.success('Order is delivered');
+    } catch (error) {
+      dispatch({ type: DELIVER_FAIL, payload: getError(error) });
+      toast.error(getError(error));
+    }
   }
 
   return (
@@ -241,6 +272,17 @@ export default function OrderScreen() {
                       </div> )
                     }
                     { loadingPay && (<div>Loading...</div>) }
+                  </li>
+                )}
+                {session.user.isAdmin && order.isPaid && !order.isDelivered && (
+                  <li>
+                    {loadingDeliver && <div>Loading...</div>}
+                    <button
+                      className="primary-button w-full"
+                      onClick={deliverOrderHandler}
+                    >
+                      Deliver Order
+                    </button>
                   </li>
                 )}
               </ul>
