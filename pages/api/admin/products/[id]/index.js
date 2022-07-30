@@ -8,12 +8,15 @@ const handler = async (req, res) => {
     return res.status(401).send('admin sign in required');
   }
 
-  if (req.method === 'GET') {
-    return await getHandler(req, res);
-  } else if (req.method === 'PUT') {
-    return await putHandler(req, res);
-  } else {
-    return res.status(405).send('method is not allowed');
+  switch (req.method) {
+    case 'GET':
+      return await getHandler(req, res);
+    case 'PUT':
+      return await putHandler(req, res);
+    case 'DELETE':
+        return await deleteHandler(req, res);
+    default:
+      return res.status(405).send('method is not allowed');
   }
 };
 
@@ -26,10 +29,24 @@ async function getHandler(req, res) {
   return res.send(product);
 }
 
-async function putHandler(req, res) {
+async function deleteHandler(req, res) {
   const productId = req.query.id;
   await db.connect();
   const product = await Product.findById(productId);
+  if (!product) {
+    await db.disconnect();
+    return res.status(404).send({ message: 'Product not found' });
+  }
+  await product.remove();
+  await db.disconnect();
+
+  return res.status(204).send({ message: 'Product deleted successfully' });
+}
+
+async function putHandler(req, res) {
+  const productId = req.query.id;
+  await db.connect();
+  const product = await Product.findById(productId).populate('user', 'name');
   const {
     name,
     slug,
