@@ -111,12 +111,12 @@ export default function AdminDashboardScreen() {
                 <div className="card m-5 p-5">
                   <p className="text-3xl">{summary.productsCount}</p>
                   <p>Products</p>
-                  <Link href="/admin/orders">View products</Link>
+                  <Link href="/admin/products">View products</Link>
                 </div>
                 <div className="card m-5 p-5">
                   <p className="text-3xl">{summary.usersCount}</p>
-                  <p>Products</p>
-                  <Link href="/admin/orders">View users</Link>
+                  <p>Users</p>
+                  <Link href="/admin/users">View users</Link>
                 </div>
               </div>
               <ChartComponent data={data} title='Sales Report'/>
