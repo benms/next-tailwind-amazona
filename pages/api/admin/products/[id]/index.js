@@ -20,7 +20,7 @@ const handler = async (req, res) => {
 async function getHandler(req, res) {
   const productId = req.query.id;
   await db.connect();
-  const product = await Product.findById(productId).populate('user', 'name');
+  const product = await Product.findById(productId);
   await db.disconnect();
 
   return res.send(product);
@@ -29,7 +29,7 @@ async function getHandler(req, res) {
 async function putHandler(req, res) {
   const productId = req.query.id;
   await db.connect();
-  const product = await Product.findById(productId).populate('user', 'name');
+  const product = await Product.findById(productId);
   const {
     name,
     slug,
