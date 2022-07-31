@@ -89,7 +89,7 @@ export default function AdminProductsScreen() {
       toast.success('Product deleted successfully');
     } catch (error) {
       dispatch({ type: PRODUCT_DELETE_FAIL });
-      toast.error(getError(error), { variant: 'error' });
+      toast.error(getError(error));
     }
   };
 
