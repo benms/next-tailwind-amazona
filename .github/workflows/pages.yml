@@ -18,6 +18,15 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+  MONGODB_URI: ${{ secrets.MONGODB_URI }}
+  PAYPAL_CLIENT_ID: ${{ secrets.PAYPAL_CLIENT_ID }} 
+  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}
+  NEXT_PUBLIC_CLOUDINARY_API_KEY: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_API_KEY }} 
+  CLOUDINARY_SECRET: ${{ secrets.CLOUDINARY_SECRET }}
+  CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }} 
+
 # Allow one concurrent deployment
 concurrency:
   group: "pages"
