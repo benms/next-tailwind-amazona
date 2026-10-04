@@ -78,9 +78,9 @@ export default function ProductScreen({ product }) {
 export async function getServerSideProps({ params }) {
   const { slug } = params;
 
-  db.connect();
+  await db.connect();
   const product = await Product.findOne({ slug }).lean();
-  db.disconnect();
+  await db.disconnect();
 
   return {
     props: {

@@ -96,7 +96,7 @@ export default function ProfileScreen() {
               id='password'
               {...register('password',
               {
-                        minLength: { value: 6, message: 'password should be at least 5 characters' }
+                        minLength: { value: 6, message: 'password should be at least 6 characters' }
                       })
               }/>
               {errors.password && (<div className='text-red-500'>{errors.password.message}</div>)}
@@ -110,7 +110,7 @@ export default function ProfileScreen() {
               {...register('confirmPassword',
               {
                         validate: (value) => value === getValues('password'),
-                        minLength: { value: 6, message: 'confirm password should be at least 5 characters' }
+                        minLength: { value: 6, message: 'confirm password should be at least 6 characters' }
                       })
               }/>
               {errors.confirmPassword && (<div className='text-red-500'>{errors.confirmPassword.message}</div>)}

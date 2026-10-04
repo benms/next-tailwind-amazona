@@ -4,7 +4,7 @@ import db from "../../../utils/db";
 
 const handler = async (req, res) => {
   if (req.method !== 'POST') {
-    return;
+    return res.status(405).send({ message: `Method ${req.method} not allowed` });
   }
 
   const { name, email, password } = req.body;
@@ -13,7 +13,7 @@ const handler = async (req, res) => {
     !email ||
     !email.includes('@') ||
     !password ||
-    password.trim().length < 5
+    password.trim().length < 6
   ) {
     res.status(422).json({
       message: 'Validation error'

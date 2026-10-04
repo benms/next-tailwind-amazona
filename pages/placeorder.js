@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import CheckoutWizard from '../components/CheckoutWizard'
 import Layout from '../components/Layout'
 import { getError } from '../utils/error'
+import { calcPrices } from '../utils/pricing';
 import { CART_CLEAR_ITEMS, useStore } from '../utils/Store';
 
 export default function PlaceOrderScreen() {
@@ -14,12 +15,7 @@ export default function PlaceOrderScreen() {
   const { cart } = state;
   const { cartItems, shippingAddress, paymentMethod } = cart;
   const router = useRouter();
-  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
-
-  const itemsPrice = round2(cartItems.reduce((a, c) => a+c.quantity*c.price, 0));
-  const shippingPrice = itemsPrice > 200 ? 0 : 15;
-  const taxPrice = round2(itemsPrice*0.15);
-  const totalPrice = round2(itemsPrice+shippingPrice+taxPrice);
+  const { itemsPrice, shippingPrice, taxPrice, totalPrice } = calcPrices(cartItems);
 
   useEffect(() => {
     if (!paymentMethod) {
@@ -36,10 +32,6 @@ export default function PlaceOrderScreen() {
         orderItems: cartItems,
         shippingAddress,
         paymentMethod,
-        itemsPrice,
-        shippingPrice,
-        taxPrice,
-        totalPrice
       });
       setLoading(false);
       dispatch({ type: CART_CLEAR_ITEMS });

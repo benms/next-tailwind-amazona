@@ -78,7 +78,7 @@ export default function RegisterScreen() {
             {...register('password',
             {
                       required: 'Please enter password',
-                      minLength: { value: 6, message: 'password should be at least 5 characters' }
+                      minLength: { value: 6, message: 'password should be at least 6 characters' }
                     })
             }/>
             {errors.password && (<div className='text-red-500'>{errors.password.message}</div>)}
@@ -93,7 +93,7 @@ export default function RegisterScreen() {
             {
                       required: 'Please enter confirm password',
                       validate: (value) => value === getValues('password'),
-                      minLength: { value: 6, message: 'confirm password should be at least 5 characters' }
+                      minLength: { value: 6, message: 'confirm password should be at least 6 characters' }
                     })
             }/>
             {errors.confirmPassword && (<div className='text-red-500'>{errors.confirmPassword.message}</div>)}

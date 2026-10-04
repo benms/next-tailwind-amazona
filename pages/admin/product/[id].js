@@ -131,7 +131,7 @@ export default function AdminProductEditScreen() {
       toast.success('Product updated successfully');
     } catch (error) {
       dispatch({ type: PRODUCT_UPDATE_FAIL, payload: getError(error) });
-      toast.success(getError(error));
+      toast.error(getError(error));
     }
   };
 
@@ -182,7 +182,7 @@ export default function AdminProductEditScreen() {
                         required: 'Please enter name'
                       })}/>
                       {errors.name && (
-                        <div className='text-red-500'>{error.name.message}</div>
+                        <div className='text-red-500'>{errors.name.message}</div>
                       )}
                   </div>
                   <div className="mb-4">
@@ -223,7 +223,7 @@ export default function AdminProductEditScreen() {
                         required: 'Please enter image'
                       })}/>
                       {errors.image && (
-                        <div className='text-red-500'>{error.image.message}</div>
+                        <div className='text-red-500'>{errors.image.message}</div>
                       )}
                   </div>
                   <div className="mb-4">
@@ -249,7 +249,7 @@ export default function AdminProductEditScreen() {
                         required: 'Please enter category'
                       })}/>
                       {errors.category && (
-                        <div className='text-red-500'>{error.category.message}</div>
+                        <div className='text-red-500'>{errors.category.message}</div>
                       )}
                   </div>
                   <div className="mb-4">
@@ -292,7 +292,7 @@ export default function AdminProductEditScreen() {
                         required: 'Please enter description'
                       })}/>
                       {errors.description && (
-                        <div className='text-red-500'>{error.description.message}</div>
+                        <div className='text-red-500'>{errors.description.message}</div>
                       )}
                   </div>
                   <div className="mb-4">

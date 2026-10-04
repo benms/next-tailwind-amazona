@@ -17,7 +17,7 @@ const handler = async (req, res) => {
 
   if (!name ||
       !email ||
-      (password && password.trim().length < 5)
+      (password && password.trim().length < 6)
      ) {
       return res.status(422).json({
         message: 'Validation error'
@@ -29,6 +29,11 @@ const handler = async (req, res) => {
   if (!updateUser) {
     await db.disconnect();
     return res.status(404).send({ message: 'User not found' });
+  }
+  const emailTaken = await User.exists({ email, _id: { $ne: updateUser._id } });
+  if (emailTaken) {
+    await db.disconnect();
+    return res.status(422).send({ message: 'Email is already in use' });
   }
 
   updateUser.name = name;

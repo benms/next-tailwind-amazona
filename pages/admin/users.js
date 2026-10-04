@@ -29,6 +29,8 @@ const reducer = (state, action) => {
       return { ...state, loadingDelete: false, successDelete: false };
     case USER_DELETE_RESET:
       return { ...state, loadingDelete: false, successDelete: false };
+    default:
+      return state;
   }
 };
 

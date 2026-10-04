@@ -38,7 +38,7 @@ function CartScreen() {
           <div className='grid md:grid-cols-4 md:gap-5'>
             <div className="overflow-x-auto md:col-span-3">
               <table className="min-w-full">
-                <thead className="bored-b">
+                <thead className="border-b">
                   <tr>
                     <th className="p-5 text-left">Item</th>
                     <th className="p-5 text-right">Quantity</th>
@@ -50,8 +50,8 @@ function CartScreen() {
                   {cartItems.map((item) => (
                     <tr key={item.slug} className='border-b'>
                       <td>
-                        <Link href={`/products/${item.slug}`}>
-                          <a className="flex item-center">
+                        <Link href={`/product/${item.slug}`}>
+                          <a className="flex items-center">
                             <Image
                               src={item.image}
                               alt={item.name}

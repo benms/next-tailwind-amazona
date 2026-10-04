@@ -22,12 +22,6 @@ const handler = async (req, res) => {
 };
 
 async function putHandler(req, res) {
-  await db.connect();
-  const updateUser = await User.findById(req.query.id);
-  if (!updateUser) {
-    await db.disconnect();
-    return res.status(404).send({ message: 'User not found'});
-  }
   const { name, email, isAdmin } = req.body;
   if (!name ||
       !email
@@ -35,6 +29,18 @@ async function putHandler(req, res) {
       return res.status(422).json({
         message: 'Validation error'
       });
+  }
+
+  await db.connect();
+  const updateUser = await User.findById(req.query.id);
+  if (!updateUser) {
+    await db.disconnect();
+    return res.status(404).send({ message: 'User not found'});
+  }
+  const emailTaken = await User.exists({ email, _id: { $ne: updateUser._id } });
+  if (emailTaken) {
+    await db.disconnect();
+    return res.status(422).send({ message: 'Email is already in use' });
   }
 
   updateUser.name = name;
@@ -54,6 +60,7 @@ async function deleteHandler(req, res) {
     return res.status(404).send({ message: 'User not found'});
   }
   if (user.isAdmin || user.email === 'john.doe@example.com') {
+    await db.disconnect();
     return res.status(400).send({ message: 'Can not delete admin or super admin' })
   }
   await user.remove();
@@ -63,7 +70,7 @@ async function deleteHandler(req, res) {
 
 async function getHandler(req, res) {
   await db.connect();
-  const user = await User.findById(req.query.id);
+  const user = await User.findById(req.query.id).select('-password');
   if (!user) {
     await db.disconnect();
     return res.status(404).send({ message: 'User not found'});

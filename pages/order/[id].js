@@ -29,8 +29,10 @@ function reducer(state, action) {
       return { ...state, loading: false, order: action.payload, error: "" };
     case ORDER_FETCH_FAIL:
       return { ...state, loading: false, error: action.payload };
+    case ORDER_PAY_REQUEST:
+      return { ...state, loadingPay: true };
     case ORDER_PAY_SUCCESS:
-      return { ...state, loadingPay: true, successPay: true };
+      return { ...state, loadingPay: false, successPay: true };
     case ORDER_PAY_FAIL:
       return { ...state, loadingPay: false, errorPay: action.payload };
     case ORDER_PAY_RESET:
@@ -138,7 +140,7 @@ export default function OrderScreen() {
         } catch (err) {
           const errMsg = getError(err);
           dispatch({ type: ORDER_PAY_FAIL, payload: errMsg });
-          console.error(errMsg);
+          toast.error(errMsg);
         }
       }
     );

@@ -61,7 +61,6 @@ export default function LoginScreen() {
             {...register('password',
             {
                       required: 'Please enter password',
-                      minLength: { value: 6, message: 'password should be at least 5 characters' }
                     })
             }/>
             {errors.password && (<div className='text-red-500'>{errors.password.message}</div>)}
